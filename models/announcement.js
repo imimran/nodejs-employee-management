@@ -1,6 +1,6 @@
 
 const { Sequelize, Model } = require("sequelize");
-const sequelize = require("../util/db.js");
+const sequelize = require("../utils/db.js");
 const Organization = require("./organization.js");
 
 const Announcement = sequelize.define("announcement", {

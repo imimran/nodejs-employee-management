@@ -1,25 +1,55 @@
 const Organization = require('../models/organization')
 const User = require('../models/user')
+const { success, fail } = require("../utils/helper");
 
 exports.getAllOrganization = async(req, res) =>{
+
+  try {
     const organization = await Organization.findAll()
-    res.send(organization)
+    res.status(200).json(success("OK", { data: organization }, res.statusCode));
+ 
+    return;
+  } catch (error) {
+    console.log(error);
+  }
+  res.status(501).json(fail(error, res.statusCode));
+  return;
+    
 }
 
 exports.addOrganization = async(req, res) => {
-  const name = req.body.name;
-  const email = req.body.email;
-  const phone = req.body.phone;
-  const address = req.body.address;
-  const userId = req.body.userId
 
+  try {
+    const name = req.body.name;
+    const email = req.body.email;
+    const phone = req.body.phone;
+    const address = req.body.address;
+    const userId = req.body.userId
 
-  const organization = await Organization.create({
-    name: name,
-    email: email,
-    phone: phone,
-    address: address,
-    userId: userId
-  });
-  res.send(organization)
+    if (!name || !email || !phone || !address || !userId) {
+      return res.status(422).json({ error: "Please input all field" });
+    }
+
+    let preOrganization = await Organization.findOne({ where: { email: req.body.email }});
+    if (preOrganization) return res.status(400).json({ msg: "Organization already registered."});
+
+    let user = await User.findByPk(userId);
+    if (!user) return res.status(400).json({ msg: "No registered User Found."});
+  
+  
+    const organization = await Organization.create({
+      name: name,
+      email: email,
+      phone: phone,
+      address: address,
+      userId: userId
+    });
+    res.status(200).json(success("OK", { data: organization }, res.statusCode));
+  } catch (error) {
+    
+    console.log(error);
+  }
+  res.status(501).json(fail(error, res.statusCode));
+  return;
+
 }

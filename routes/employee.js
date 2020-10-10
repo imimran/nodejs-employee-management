@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const auth = require('../middleware/isAuth')
 
 const {
   getAllEmployee,
@@ -9,7 +10,7 @@ const {
   deleteEmployee
 } = require("../controllers/employee");
 
-router.get("/",  getAllEmployee);
+router.get("/", auth,  getAllEmployee);
 router.get("/:id", getEmployeeById)
 router.post("/", addEmployee);
 router.put("/:id", editEmployee);

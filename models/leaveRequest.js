@@ -1,5 +1,5 @@
 const { Sequelize, Model} = require('sequelize')
-const sequelize = require('../util/db.js');
+const sequelize = require('../utils/db.js');
 const Employee = require('./employee.js');
 
 const LeaveRequest = sequelize.define("leaverequest", {

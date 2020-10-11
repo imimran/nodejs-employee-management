@@ -1,8 +1,8 @@
 const express = require("express");
-const User = require("../models/user");
+const User = require("../../models/user");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const { jwtKey } = require("../utils/key");
+const { jwtKey } = require("../../utils/key");
 
 router.get("/", (req, res) => {
   res.send("Hello Empolyee");

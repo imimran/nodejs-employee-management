@@ -4,15 +4,15 @@ const sequelize = require('./utils/db')
 
 const app = express();
 
-const userRoutes = require('./routes/user')
-const authRoutes = require('./routes/auth')
-const organizationRoute = require('./routes/organization')
-const employeeRoute = require("./routes/employee");
-const payrollRoute = require("./routes/payroll");
-const attendenceRoute = require("./routes/attendence");
-const leaveReqRoute = require("./routes/leaveRequest");
-const announcementRoute = require("./routes/announcement");
-const costManage = require("./routes/costManage");
+const userRoutes = require('./routes/user/user')
+const authRoutes = require('./routes/user/auth')
+const organizationRoute = require('./routes/admin/organization')
+const employeeRoute = require("./routes/admin/employee");
+const payrollRoute = require("./routes/admin/payroll");
+const attendenceRoute = require("./routes/admin/attendence");
+const leaveReqRoute = require("./routes/admin/leaveRequest");
+const announcementRoute = require("./routes/admin/announcement");
+const costManage = require("./routes/admin/costManage");
 
 const User = require('./models/user')
 const Organization = require('./models/organization')
@@ -64,9 +64,13 @@ Employee.belongsTo(Organization)
 
 Employee.hasOne(Payroll)
 Payroll.belongsTo(Employee)
+Organization.hasMany(Payroll);
+Payroll.belongsTo(Organization);
 
 Employee.hasOne(Attendence);
 Attendence.belongsTo(Employee);
+Organization.hasMany(Attendence);
+Attendence.belongsTo(Organization);
 
 Employee.hasMany(LeveRequest);
 LeveRequest.belongsTo(Employee);  

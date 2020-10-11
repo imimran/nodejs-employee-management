@@ -1,5 +1,6 @@
 const { Sequelize, Model } = require("sequelize");
 const sequelize = require("../utils/db");
+const Organization = require('./organization')
 
 
 const Attendence = sequelize.define("attendence", {
@@ -16,6 +17,13 @@ const Attendence = sequelize.define("attendence", {
   leaves: {
     type: Sequelize.INTEGER,
     allowNull: false,
+  },
+  organizationId: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Organization,
+      key: "id",
+    },
   },
 });
 

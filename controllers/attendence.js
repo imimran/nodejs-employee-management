@@ -1,5 +1,6 @@
 const Attendence = require('../models/attendence')
 const Employee = require("../models/employee");
+const Organization = require('../models/organization')
 const { success, fail } = require("../utils/helper");
 
 exports.getAllAttendence = async(req, res) =>{
@@ -41,8 +42,9 @@ exports.addAttendence = async(req, res) =>{
          const month = req.body.month;
          const leaves = req.body.leaves;
          const employeeId = req.body.employeeId;
+         const organizationId = req.body.organizationId
 
-         if (!month || !leaves || !employeeId) {
+         if (!month || !leaves || !employeeId || !organizationId) {
            return res.status(422).json({ error: "Please input all field" });
          }
 
@@ -52,10 +54,17 @@ exports.addAttendence = async(req, res) =>{
              .status(400)
              .json({ msg: "No registered Employee Found." });
 
+         let organization = await Organization.findByPk(organizationId);
+         if (!organization)
+           return res
+             .status(400)
+             .json({ msg: "No registered Organization Found." });       
+
         const attendence = await Attendence.create({
           month: month,
           leaves: leaves,
           employeeId: employeeId,
+          organizationId: organizationId
         });
          res
            .status(200)

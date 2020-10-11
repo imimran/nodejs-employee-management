@@ -13,6 +13,10 @@ const Employee = sequelize.define("employee", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
   designation: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -21,12 +25,12 @@ const Employee = sequelize.define("employee", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  organizationId:{
+  organizationId: {
     type: Sequelize.INTEGER,
     references: {
-      model : Organization,
-      key: 'id' 
-    } 
-  }
+      model: Organization,
+      key: "id",
+    },
+  },
 });
 module.exports = Employee;

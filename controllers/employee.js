@@ -1,51 +1,132 @@
 const Employee = require("../models/employee");
+const Organization = require("../models/organization");
 const { success, fail } = require("../utils/helper");
 
 exports.getAllEmployee = async (req, res) => {
-  const employees = await Employee.findAll();
-  res.send(employees);
+  try {
+    const employees = await Employee.findAll();
+    res.status(200).json(success("OK", { data: employees }, res.statusCode));
+  } catch (error) {
+    console.log(error);
+  }
+  res.status(501).json(fail(error, res.statusCode));
+  return;
 };
 
 exports.getEmployeeById = async (req, res) => {
-  const employee = await Employee.findByPk(req.params.id);
-  res.send(employee);
+  try {
+    if (!req.params.id) {
+      throw "No Match ID";
+    }
+
+    const employee = await Employee.findByPk(req.params.id);
+    res.status(200).json(success("OK", { data: employee }, res.statusCode));
+    return;
+  } catch (error) {
+    console.log(error);
+  }
+  res.status(501).json(fail(error, res.statusCode));
+  return;
 };
 
 exports.addEmployee = async (req, res) => {
-  const name = req.body.name;
-  const designation = req.body.designation;
-  const department = req.body.department;
-  const organizationId = req.body.organizationId;
+  try {
+    const name = req.body.name;
+    const email = req.body.email;
+    const designation = req.body.designation;
+    const department = req.body.department;
+    const organizationId = req.body.organizationId;
 
-  const employee = await Employee.create({
-    name: name,
-    designation: designation,
-    department: department,
-    organizationId: organizationId,
-  });
-  res.send(employee);
+    if (!name || !email || !designation || !department || !organizationId) {
+      return res.status(422).json({ error: "Please input all field" });
+    }
+
+    let preEmployee = await Employee.findOne({
+      where: { email: req.body.email },
+    });
+    if (preEmployee)
+      return res.status(400).json({ msg: "Employee already registered." });
+
+    let organization = await Organization.findByPk(organizationId);
+    if (!organization)
+      return res.status(400).json({ msg: "No registered Organization Found." });
+
+    const employee = await Employee.create({
+      name: name,
+      email: email,
+      designation: designation,
+      department: department,
+      organizationId: organizationId,
+    });
+    res.status(200).json(success("OK", { data: employee }, res.statusCode));
+  } catch (error) {
+    console.log(error);
+  }
+  res.status(501).json(fail(error, res.statusCode));
+  return;
 };
 
 exports.editEmployee = async (req, res) => {
-  const editEmployee = await Employee.update(
-    {
-      name: req.body.name,
-      designation: req.body.designation,
-      department: req.body.department,
-      organizationId: req.body.organizationId,
-    },
-    {
-      where: { id: req.params.id },
+  try {
+   
+        const name = req.body.name;
+        const email = req.body.email;
+        const designation = req.body.designation;
+        const department = req.body.department;
+        const organizationId = req.body.organizationId;
+        
+    if (!name || !email || !designation || !department || !organizationId) {
+      return res.status(422).json({ error: "Please input all field" });
     }
-  );
-  res.json({ msg: "Employee Edit Successfully" });
+
+    // let preEmployee = await Employee.findOne({
+    //   where: { email: req.body.email },
+    // });
+    // if (preEmployee)
+    //   return res.status(400).json({ msg: "Employee already registered." });
+
+    let organization = await Organization.findByPk(organizationId);
+    if (!organization)
+      return res.status(400).json({ msg: "No registered Organization Found." });
+    const editEmployee = await Employee.update(
+      {
+        name: req.body.name,
+        email: req.body.email,
+        designation: req.body.designation,
+        department: req.body.department,
+        organizationId: req.body.organizationId,
+      },
+      {
+        where: { id: req.params.id },
+      }
+    );
+    res.status(200).json(success("Edit Successfully", { data: editEmployee }, res.statusCode));
+  } catch (error) {
+    console.log(error);
+  }
+  res.status(501).json(fail(error, res.statusCode));
+  return;
 };
 
 exports.deleteEmployee = async (req, res) => {
-  const removeEmployee = await Employee.destroy({
-    where: {
-      id: req.params.id, 
-    }
-  });
-  res.json({ msg: "Employee Remove Successfully" });
+  try {
+    const removeEmployee = await Employee.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res
+      .status(200)
+      .json(
+        success("Remove Employee", { data: removeEmployee }, res.statusCode)
+      );
+
+    return;
+  } catch (error) {
+    console.log(error);
+  }
+  res.status(501).json(fail(error, res.statusCode));
+  return;
+
+  
 };

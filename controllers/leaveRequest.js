@@ -1,6 +1,6 @@
 const Employee = require("../models/employee");
 const LeaveRequest = require("../models/leaveRequest");
-const { success, fail } = require("../utils/helper");
+const { success, fail, validation } = require("../utils/helper");
 
 exports.getAllLeaveRequest = async (req, res) => {
   try {
@@ -35,12 +35,12 @@ exports.addLeaveRequest = async (req, res) => {
     const employeeId = req.body.employeeId;
 
     if (!leaveForDays || !employeeId) {
-      return res.status(422).json({ error: "Please input all field" });
+      return res.status(422).json(validation("Please input all field", res.statusCode ));
     }
 
     let employee = await Employee.findByPk(employeeId);
     if (!employee)
-      return res.status(400).json({ msg: "No registered Employee Found." });
+      return res.status(400).json(validation("No registered Employee Found.", res.statusCode));
 
     const leaveReq = await LeaveRequest.create({
       leaveForDays: leaveForDays,

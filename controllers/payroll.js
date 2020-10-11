@@ -42,18 +42,20 @@ exports.addPayroll = async( req, res) =>{
    const organizationId = req.body.organizationId
 
       if (!salary || !employeeId || !organizationId) {
-        return res.status(422).json({ error: "Please input all field" });
+        return res
+          .status(422)
+          .json(validation("Please input all field", res.statusCode));
       }
 
       let employee = await Employee.findByPk(employeeId);
       if (!employee)
-        return res.status(400).json({ msg: "No registered Employee Found." });
+        return res.status(400).json(validation("No registered Employee Found.", res.statusCode));
 
       let organization = await Organization.findByPk(organizationId);
       if (!organization)
         return res
           .status(400)
-          .json({ msg: "No registered Organization Found." });  
+          .json(validation("No registered Organization Found.", res.statusCode));
 
       const payroll = await Payroll.create({
         salary: salary,

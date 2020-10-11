@@ -1,6 +1,6 @@
 const Employee = require("../models/employee");
 const Organization = require("../models/organization");
-const { success, fail } = require("../utils/helper");
+const { success, fail, validation } = require("../utils/helper");
 
 exports.getAllEmployee = async (req, res) => {
   try {
@@ -38,18 +38,18 @@ exports.addEmployee = async (req, res) => {
     const organizationId = req.body.organizationId;
 
     if (!name || !email || !designation || !department || !organizationId) {
-      return res.status(422).json({ error: "Please input all field" });
+      return res.status(422).json(validation("Please input all field", res.statusCode));
     }
 
     let preEmployee = await Employee.findOne({
       where: { email: req.body.email },
     });
     if (preEmployee)
-      return res.status(400).json({ msg: "Employee already registered." });
+      return res.status(400).json(validation("Employee already registered.", res.statusCode));
 
     let organization = await Organization.findByPk(organizationId);
     if (!organization)
-      return res.status(400).json({ msg: "No registered Organization Found." });
+      return res.status(400).json(validation( "No registered Organization Found.", res.statusCode));
 
     const employee = await Employee.create({
       name: name,
@@ -76,7 +76,9 @@ exports.editEmployee = async (req, res) => {
         const organizationId = req.body.organizationId;
         
     if (!name || !email || !designation || !department || !organizationId) {
-      return res.status(422).json({ error: "Please input all field" });
+      return res
+        .status(422)
+        .json(validation("Please input all field", res.statusCode));
     }
 
     // let preEmployee = await Employee.findOne({
@@ -87,7 +89,9 @@ exports.editEmployee = async (req, res) => {
 
     let organization = await Organization.findByPk(organizationId);
     if (!organization)
-      return res.status(400).json({ msg: "No registered Organization Found." });
+      return res
+        .status(400)
+        .json(validation("No registered Organization Found.", res.statusCode));
     const editEmployee = await Employee.update(
       {
         name: req.body.name,

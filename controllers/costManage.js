@@ -40,14 +40,18 @@ exports.addCost = async (req, res) => {
        const organizationId = req.body.organizationId;
 
      if (!staffSalary || !officeRent || !utilityBill || !organizationId) {
-       return res.status(422).json({ error: "Please input all field" });
+       return res
+         .status(422)
+         .son(validation("Please input all field", res.statusCode));
      }
 
       let organization = await Organization.findByPk(organizationId);
       if (!organization)
         return res
           .status(400)
-          .json({ msg: "No registered Organization Found." });
+          .json(
+            validation("No registered Organization Found.", res.statusCode)
+          );
 
    const cost = await CostMange.create({
      staffSalary: staffSalary,

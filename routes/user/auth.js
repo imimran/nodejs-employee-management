@@ -3,6 +3,8 @@ const User = require("../../models/user");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const { jwtKey } = require("../../utils/key");
+const bcrypt = require("bcrypt");
+const {validation, success} = require('../../utils/helper')
 
 router.get("/", (req, res) => {
   res.send("Hello Empolyee");
@@ -10,19 +12,22 @@ router.get("/", (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    return res.json({ error: "please add email or password" });
-  }
-  let user = await User.findOne({ email: email });
-  if (req.body.email !== user.email)
-    return res.status(400).send("Invalid email or password");
 
-  if (req.body.password !== user.password)
-    return res.status(400).send("Invalid email or password ");
+  if (!email || !password) {
+    return res.json(validation("please add email or password", res.statusCode));
+  }
+
+let user = await User.findOne({ where: { email: req.body.email }});
+    if (!user) return res.status(400).json(validation("User Not registered.", res.statusCode))
+
+
+ bcrypt.compare(req.body.password, user.password);
+ if (req.body.password !== user.password)
+   return res.status(400).json(validation("Invalid email or password ", res.statusCode));
 
   const token = jwt.sign({ id: user.id, email: user.email }, jwtKey);
-  // res.json({ meg: "Successfully Login" });
-  res.json({ token });
+  res.status(200).json(success("Your Token! ", { data: token }, res.statusCode));
+
 });
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const Announcement = require("../models/announcement");
 const Organization = require("../models/organization");
-const {success, fail} = require('../utils/helper')
+const {success, fail, validation} = require('../utils/helper')
 
 exports.getAllAnnouncement = async (req, res) => {
   
@@ -43,12 +43,12 @@ exports.addAnnouncement = async (req, res) => {
         const organizationId = req.body.organizationId;
 
       if (!message || !organizationId) {
-        return res.status(422).json({ error: "Please input all field" });
+        return res.status(422).json(validation("Please input all field", res.statusCode));
       }
 
       let organization = await Organization.findByPk(organizationId);
       if (!organization)
-        return res.status(400).json({ msg: "No registered Organization Found." });
+        return res.status(400).json(validation( "No registered Organization Found.", res.statusCode ));
 
       const announcement = await Announcement.create({
         message: message,

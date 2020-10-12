@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const auth = require("../../middleware/isAuth");
+const auth = require("../../middlewares/isAuth");
 
 const {
   getAllCost, getCostById, addCost

@@ -5,6 +5,11 @@ const { success, fail, validation } = require("../utils/helper");
 exports.getAllOrganization = async(req, res) =>{
 
   try {
+    //  let user = await User.findByPk(req.params.id);
+    //  if (!user)
+    //    return res
+    //      .status(400)
+    //      .json(validation("User not match.", res.statusCode));
     const organization = await Organization.findAll()
     res.status(200).json(success("OK", { data: organization }, res.statusCode));
  
@@ -19,12 +24,7 @@ exports.getAllOrganization = async(req, res) =>{
 
 exports.getOrganizationById = async (req, res) => {
   try {
-    let user = await User.findByPk(req.params.id);
-     if (req.body.id !== user)
-         return res
-           .status(400)
-           .json(validation("User Not Match.", res.statusCode));
-
+  
     const organization = await Organization.findByPk(req.params.id);
     res.status(200).json(success("OK", { data: organization }, res.statusCode));
 

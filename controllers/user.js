@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const { success, fail, validation } = require("../utils/helper");
 const bcrypt = require("bcrypt");
-const { use } = require("../routes/user/user");
+
 
 exports.getAllUser = async (req, res) => {
   try {

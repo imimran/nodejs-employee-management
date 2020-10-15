@@ -36,7 +36,7 @@ app.use("/api/leave-request", leaveReqRoute);
 app.use("/api/announcement", announcementRoute );
 app.use("/api/cost", costManage);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 // sequelize.sync({ alter: true})
 // .then( () => {

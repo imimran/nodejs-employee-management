@@ -24,11 +24,11 @@ exports.success = (message, results, statusCode) => {
     };
   };
 
-  exports.validation = (errors) => {
+  exports.validation = (errors, statusText = null) => {
     return {
-      message: "Validation errors",
+      message: statusText || "Please Enter Valid Data",
       error: true,
-      code: 422,
+      code: 501,
       errors
     };
   };

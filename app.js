@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const sequelize = require('./utils/db')
+const cors = require('cors')
 
 const app = express();
 
@@ -25,6 +26,7 @@ const CostManage = require("./models/costManage");
 
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true}))
+app.use(cors())
 
 app.use("/api/auth", authRoutes);
 app.use('/api/user', userRoutes)

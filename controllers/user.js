@@ -41,15 +41,17 @@ exports.addUser = async (req, res) => {
 
     if (!username || !email || !password) {
       return res
-        .status(422)
-        .json(validation("Please input all field", res.statusCode));
+        .status(501)
+        .json(validation("Please input all field"));
     }
 
     let preUser = await User.findOne({ where: { email: req.body.email } });
     if (preUser)
       return res
-        .status(400)
-        .json(validation("User already registered.", res.statusCode));
+        .status(501)
+        .json(
+          validation({ email: "User already registered."})
+        );
 
     const user = await User.create({
       username: username,
@@ -57,16 +59,19 @@ exports.addUser = async (req, res) => {
       password: password,
     });
 
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(user.password, salt);
-    await user.save();
+    // const salt = await bcrypt.genSalt(10);
+    // user.password = await bcrypt.hash(user.password, salt);
+    // await user.save();
      
     
 
     res.status(200).json(success("OK", { data: user }, res.statusCode));
+
+    return;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
+    res.status(501).json(fail(error, res.statusCode));
+    return;
   }
-  res.status(501).json(fail(error, res.statusCode));
-  return;
+  
 };

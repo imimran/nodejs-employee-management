@@ -14,16 +14,16 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.json(validation("please add email or password", res.statusCode));
+    return res.json(validation("please add email or password"));
   }
 
 let user = await User.findOne({ where: { email: req.body.email }});
-    if (!user) return res.status(400).json(validation("User Not registered.", res.statusCode))
+    if (!user) return res.status(400).json(validation("User Not registered."))
 
 
  bcrypt.compare(req.body.password, user.password);
  if (req.body.password !== user.password)
-   return res.status(400).json(validation("Invalid email or password ", res.statusCode));
+   return res.status(400).json(validation("Invalid email or password "));
 
   const token = jwt.sign({ id: user.id, email: user.email }, jwtKey);
   res.status(200).json(success("Your Token! ", { data: token }, res.statusCode));

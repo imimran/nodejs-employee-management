@@ -1,3 +1,3 @@
-Use try Cathch in controllers
-Use status code
-Use sedder & migration 
+1. sedder & migration 
+2. improve database relation 
+3. add importent model field

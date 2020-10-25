@@ -4,7 +4,7 @@ const {validation} = require('../utils/helper')
 
 
  function auth( req, res, next){
-     const token = req.headers.authorization;
+     const token = req.header('auth-token');
      if(!token)
      return res.status(501).json(validation("Authorization Failed.No token Provided", res.statusCode))
 

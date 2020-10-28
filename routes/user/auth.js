@@ -14,11 +14,13 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.json(validation("please add email or password"));
+    return res.status(501).json(validation("please add email or password"));
   }
 
 let user = await User.findOne({ where: { email: req.body.email }});
-    if (!user) return res.status(400).json(validation("User Not registered."))
+    if (!user) return res
+      .status(400)
+      .json(validation("User Not registered."));
 
 
  bcrypt.compare(req.body.password, user.password);

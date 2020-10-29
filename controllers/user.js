@@ -1,6 +1,8 @@
 const User = require("../models/user");
 const { success, fail, validation } = require("../utils/helper");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { jwtKey } = require('../utils/key')
 
 
 exports.getAllUser = async (req, res) => {
@@ -12,7 +14,7 @@ exports.getAllUser = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  res.status(501).json(fail(error, res.statusCode));
+  res.status(500).json(fail(error, res.statusCode));
   return;
 };
 
@@ -29,7 +31,7 @@ exports.getUser = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  res.status(501).json(fail(error, res.statusCode));
+  res.status(500).json(fail(error, res.statusCode));
   return;
 };
 
@@ -64,13 +66,16 @@ exports.addUser = async (req, res) => {
     // await user.save();
      
     
-
-    res.status(200).json(success("OK", { data: user }, res.statusCode));
+  const token = jwt.sign({ id: user.id, email: user.email }, jwtKey);
+  res
+    .status(200)
+    .json(success("Your Token! ", { data: token }, res.statusCode));
+   // res.status(200).json(success("OK", { data: user }, res.statusCode));
 
     return;
   } catch (error) {
     // console.log(error);
-    res.status(501).json(fail(error, res.statusCode));
+    res.status(500).json(fail(error, res.statusCode));
     return;
   }
   

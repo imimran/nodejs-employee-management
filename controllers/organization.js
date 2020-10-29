@@ -10,9 +10,8 @@ exports.getAllOrganization = async(req, res) =>{
     //    return res
     //      .status(400)
     //      .json(validation("User not match.", res.statusCode));
-    const organization = await Organization.findAll()
-    res.status(200).json(success("OK", { data: organization }, res.statusCode));
- 
+    const organizations = await Organization.findAll()
+    res.status(200).json(success("OK", { data: organizations }, res.statusCode));
     return;
   } catch (error) {
     console.log(error);

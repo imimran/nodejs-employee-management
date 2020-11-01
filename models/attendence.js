@@ -20,6 +20,7 @@ const Attendence = sequelize.define("attendence", {
   },
   organizationId: {
     type: Sequelize.INTEGER,
+    allowNull: true,
     references: {
       model: Organization,
       key: "id",

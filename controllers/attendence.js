@@ -35,31 +35,31 @@ exports.addAttendence = async (req, res) => {
     const month = req.body.month;
     const leaves = req.body.leaves;
     const employeeId = req.body.employeeId;
-    const organizationId = req.body.organizationId;
+    //const organizationId = req.body.organizationId;
 
-    if (!month || !leaves || !employeeId || !organizationId) {
+    if (!month || !leaves || !employeeId) {
       return res
         .status(422)
         .json(validation("Please input all field", res.statusCode));
     }
 
-    let employee = await Employee.findByPk(employeeId);
-    if (!employee)
-      return res
-        .status(400)
-        .json(validation("No registered Employee Found.", res.statusCode));
+    // let employee = await Employee.findByPk(employeeId);
+    // if (!employee)
+    //   return res
+    //     .status(400)
+    //     .json(validation("No registered Employee Found.", res.statusCode));
 
-    let organization = await Organization.findByPk(organizationId);
-    if (!organization)
-      return res
-        .status(400)
-        .json(validation("No registered Organization Found.", res.statusCode));
+    // let organization = await Organization.findByPk(organizationId);
+    // if (!organization)
+    //   return res
+    //     .status(400)
+    //     .json(validation("No registered Organization Found.", res.statusCode));
 
     const attendence = await Attendence.create({
       month: month,
       leaves: leaves,
       employeeId: employeeId,
-      organizationId: organizationId,
+      //organizationId: organizationId,
     });
     res
       .status(200)

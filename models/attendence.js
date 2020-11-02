@@ -18,14 +18,14 @@ const Attendence = sequelize.define("attendence", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  organizationId: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
-    references: {
-      model: Organization,
-      key: "id",
-    },
-  },
+  // organizationId: {
+  //   type: Sequelize.INTEGER,
+  //   allowNull: true,
+  //   references: {
+  //     model: Organization,
+  //     key: "id",
+  //   },
+  // },
 });
 
 module.exports = Attendence;

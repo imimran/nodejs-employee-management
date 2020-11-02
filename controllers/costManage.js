@@ -1,6 +1,6 @@
 const CostMange = require("../models/costManage");
 const Organization = require("../models/organization");
-const { success, fail } = require("../utils/helper");
+const { success, fail, validation } = require("../utils/helper");
 
 exports.getAllCost = async (req, res) => {
   try {
@@ -34,25 +34,25 @@ exports.addCost = async (req, res) => {
     const staffSalary = req.body.staffSalary;
     const officeRent = req.body.officeRent;
     const utilityBill = req.body.utilityBill;
-    const organizationId = req.body.organizationId;
+    //const organizationId = req.body.organizationId;
 
-    if (!staffSalary || !officeRent || !utilityBill || !organizationId) {
+    if (!staffSalary || !officeRent || !utilityBill ) {
       return res
         .status(422)
-        .son(validation("Please input all field", res.statusCode));
+        .json(validation("Please input all field"));
     }
 
-    let organization = await Organization.findByPk(organizationId);
-    if (!organization)
-      return res
-        .status(400)
-        .json(validation("No registered Organization Found.", res.statusCode));
+    // let organization = await Organization.findByPk(organizationId);
+    // if (!organization)
+    //   return res
+    //     .status(400)
+    //     .json(validation("No registered Organization Found.", res.statusCode));
 
     const cost = await CostMange.create({
       staffSalary: staffSalary,
       officeRent: officeRent,
       utilityBill: utilityBill,
-      organizationId: organizationId,
+      //organizationId: organizationId,
     });
     res
       .status(200)

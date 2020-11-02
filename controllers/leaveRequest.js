@@ -46,7 +46,7 @@ exports.addLeaveRequest = async (req, res) => {
     if (!employee)
       return res
         .status(400)
-        .json(validation("No registered Employee Found.", res.statusCode));
+        .json(validation("No registered Employee Found."));
 
     const leaveReq = await LeaveRequest.create({
       leaveForDays: leaveForDays,

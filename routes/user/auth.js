@@ -28,7 +28,7 @@ let user = await User.findOne({ where: { email: req.body.email }});
    return res.status(400).json(validation("Invalid email or password "));
 
   const token = jwt.sign({ id: user.id, email: user.email }, jwtKey);
-  res.status(200).json(success("Your Token! ", { data: token }, res.statusCode));
+  res.status(200).json(success("Your Token! ", { data: token, id: user.id, email: user.email }, res.statusCode));
 
 });
 

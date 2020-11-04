@@ -34,8 +34,8 @@ exports.addAttendence = async (req, res) => {
   try {
     const month = req.body.month;
     const leaves = req.body.leaves;
-    //const employeeId = req.body.employeeId;
-    //const organizationId = req.body.organizationId;
+    const employeeId = req.body.employeeId;
+    const organizationId = req.body.organizationId;
 
     if (!month || !leaves) {
       return res
@@ -58,8 +58,8 @@ exports.addAttendence = async (req, res) => {
     const attendence = await Attendence.create({
       month: month,
       leaves: leaves,
-      //employeeId: employeeId,
-      //organizationId: organizationId,
+      employeeId: employeeId,
+      organizationId: organizationId,
     });
     res
       .status(200)

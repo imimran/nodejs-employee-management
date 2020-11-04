@@ -29,6 +29,6 @@ exports.success = (message, results, statusCode) => {
       message: statusText || "Please Enter Valid Data",
       error: true,
       code: 501,
-      errors
+      errors,
     };
   };

@@ -35,7 +35,7 @@ exports.addEmployee = async (req, res) => {
     const email = req.body.email;
     const designation = req.body.designation;
     const department = req.body.department;
-    //const organizationId = req.body.organizationId;
+    const organizationId = req.body.organizationId;
 
     if (!name || !email || !designation || !department) {
       return res.status(422).json(validation("Please input all field"));
@@ -58,7 +58,7 @@ exports.addEmployee = async (req, res) => {
       email: email,
       designation: designation,
       department: department,
-      //organizationId: organizationId,
+      organizationId: organizationId,
     });
     res.status(200).json(success("OK", { data: employee }, res.statusCode));
   } catch (error) {

@@ -24,13 +24,13 @@ const CostManage = sequelize.define("costmanage", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  // organizationId: {
-  //   type: Sequelize.INTEGER,
-  //   references: {
-  //     model: Organization,
-  //     key: "id",
-  //   },
-  // },
+  organizationId: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Organization,
+      key: "id",
+    },
+  },
 });
 
 module.exports = CostManage;

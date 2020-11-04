@@ -26,12 +26,12 @@ const Organization = sequelize.define("organization", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  // userId: {
-  //   type: Sequelize.INTEGER,
-  //   references:{
-  //       model: User,
-  //       key: 'id'
-  //   }
-  // },
+  userId: {
+    type: Sequelize.INTEGER,
+    references:{
+        model: User,
+        key: 'id'
+    }
+  },
 });
 module.exports = Organization

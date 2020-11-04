@@ -40,7 +40,7 @@ exports.addOrganization = async (req, res) => {
     const email = req.body.email;
     const phone = req.body.phone;
     const address = req.body.address;
-    //const userId = req.body.userId
+    const userId = req.body.userId
 
     if (!name || !email || !phone || !address) {
       return res.status(422).json(validation("Please input all field"));
@@ -51,18 +51,18 @@ exports.addOrganization = async (req, res) => {
     });
     if (preOrganization)
       return res
-        .status(400)
-        .json(validation("Organization already registered.", res.statusCode));
+        .status(501)
+        .json(validation("Organization already registered."));
 
     // let user = await User.findByPk(userId);
-    // if (!user) return res.status(400).json(validation("No registered User Found.", res.statusCode));
+    // if (!user) return res.status(400).json(validation("No registered User Found."));
 
     const organization = await Organization.create({
       name: name,
       email: email,
       phone: phone,
       address: address,
-      //userId: userId
+      userId: userId
     });
     res.status(200).json(success("OK", { data: organization }, res.statusCode));
   } catch (error) {

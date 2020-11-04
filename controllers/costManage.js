@@ -34,7 +34,7 @@ exports.addCost = async (req, res) => {
     const staffSalary = req.body.staffSalary;
     const officeRent = req.body.officeRent;
     const utilityBill = req.body.utilityBill;
-    //const organizationId = req.body.organizationId;
+    const organizationId = req.body.organizationId;
 
     if (!staffSalary || !officeRent || !utilityBill ) {
       return res
@@ -52,7 +52,7 @@ exports.addCost = async (req, res) => {
       staffSalary: staffSalary,
       officeRent: officeRent,
       utilityBill: utilityBill,
-      //organizationId: organizationId,
+      organizationId: organizationId,
     });
     res
       .status(200)

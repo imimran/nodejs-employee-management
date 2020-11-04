@@ -36,7 +36,7 @@ exports.getAllLeaveRequestById = async (req, res) => {
 exports.addLeaveRequest = async (req, res) => {
   try {
     const leaveForDays = req.body.leaveForDays;
-    //const employeeId = req.body.employeeId;
+    const employeeId = req.body.employeeId;
 
     if (!leaveForDays) {
       return res.status(422).json(validation("Please input all field"));
@@ -50,7 +50,7 @@ exports.addLeaveRequest = async (req, res) => {
 
     const leaveReq = await LeaveRequest.create({
       leaveForDays: leaveForDays,
-      //employeeId: employeeId,
+      employeeId: employeeId,
     });
     res
       .status(200)

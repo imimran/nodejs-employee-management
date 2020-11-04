@@ -33,8 +33,8 @@ exports.getPayrollById = async (req, res) => {
 exports.addPayroll = async (req, res) => {
   try {
     const salary = req.body.salary;
-    // const employeeId = req.body.employeeId;
-    // const organizationId = req.body.organizationId;
+    const employeeId = req.body.employeeId;
+    const organizationId = req.body.organizationId;
 
     if (!salary) {
       return res
@@ -56,8 +56,8 @@ exports.addPayroll = async (req, res) => {
 
     const payroll = await Payroll.create({
       salary: salary,
-      // employeeId: employeeId,
-      // organizationId: organizationId,
+      employeeId: employeeId,
+      organizationId: organizationId,
     });
     res
       .status(200)

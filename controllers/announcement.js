@@ -34,7 +34,7 @@ exports.getAllAnnouncementById = async (req, res) => {
 exports.addAnnouncement = async (req, res) => {
   try {
     const message = req.body.message;
-    //const organizationId = req.body.organizationId;
+    const organizationId = req.body.organizationId;
 
     if (!message) {
       return res.status(422).json(validation("Please input all field"));
@@ -46,7 +46,7 @@ exports.addAnnouncement = async (req, res) => {
 
     const announcement = await Announcement.create({
       message: message,
-      //organizationId: organizationId,
+      organizationId: organizationId,
     });
     res
       .status(200)

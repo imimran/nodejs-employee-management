@@ -68,7 +68,6 @@ exports.addUser = async (req, res) => {
 
     return;
   } catch (error) {
-    // console.log(error);
     res.status(500).json(fail(error, res.statusCode));
     return;
   }

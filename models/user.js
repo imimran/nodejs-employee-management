@@ -22,15 +22,15 @@ const User = sequelize.define("user", {
   },
   isAdmin: {
     type: Sequelize.BOOLEAN,
-    default: false,
+    defaultValue: false,
   },
   isEmployee: {
     type: Sequelize.BOOLEAN,
-    default: false,
+    defaultValue: false,
   },
   isOrganizer: {
     type: Sequelize.BOOLEAN,
-    default: false,
+    defaultValue: false,
   },
 });
 module.exports = User

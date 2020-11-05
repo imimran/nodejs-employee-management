@@ -3,6 +3,7 @@ const { success, fail, validation } = require("../utils/helper");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { jwtKey } = require("../utils/key");
+const _ = require('lodash')
 
 exports.getAllUser = async (req, res) => {
   try {
@@ -42,7 +43,8 @@ exports.addUser = async (req, res) => {
 
     if (!username || !email || !password) {
       return res.status(501).json(validation("Please input all field"));
-    }
+    } 
+
 
     let preUser = await User.findOne({ where: { email: req.body.email } });
     if (preUser)
@@ -50,11 +52,9 @@ exports.addUser = async (req, res) => {
         .status(501)
         .json(validation({ email: "User already registered." }));
 
-    const user = await User.create({
-      username: username,
-      email: email,
-      password: password,
-    });
+    const picked = _.pick(req.body, ['username', 'email', 'password'])    
+
+    const user = await User.create(picked);
 
     // const salt = await bcrypt.genSalt(10);
     // user.password = await bcrypt.hash(user.password, salt);

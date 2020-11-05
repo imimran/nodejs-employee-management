@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../../middlewares/isAuth");
-
+const {isEmployee} = require('../../middlewares/isRoll')
 const {
  getAllLeaveRequest, getAllLeaveRequestById, addLeaveRequest
 } = require("../../controllers/leaveRequest");
 
-router.get("/", auth, getAllLeaveRequest);
-router.get("/:id", auth, getAllLeaveRequestById);
-router.post("/", auth, addLeaveRequest);
+router.get("/", [auth, isEmployee], getAllLeaveRequest);
+router.get("/:id", [auth], getAllLeaveRequestById);
+router.post("/", [auth], addLeaveRequest);
 
 module.exports = router;

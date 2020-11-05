@@ -20,5 +20,17 @@ const User = sequelize.define("user", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    default: false,
+  },
+  isEmployee: {
+    type: Sequelize.BOOLEAN,
+    default: false,
+  },
+  isOrganizer: {
+    type: Sequelize.BOOLEAN,
+    default: false,
+  },
 });
 module.exports = User

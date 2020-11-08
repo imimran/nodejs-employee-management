@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken")
 const {jwtKey} = require("./key")
 const User = require("../models/user");
+const Organization = require("../models/organization");
 
 exports.authUser = async (token) => {
      try {
@@ -13,3 +14,14 @@ exports.authUser = async (token) => {
          throw error;
      }
 }
+
+// exports.authOrganizer = async () => {
+//   try {
+//     auth_organizer = await Organization.findByPk(organizationId);
+    
+//     console.log(auth_organizer);
+//     //return auth_organizer;
+//   } catch (error) {
+//     throw error;
+//   }
+// };

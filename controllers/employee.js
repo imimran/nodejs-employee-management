@@ -37,7 +37,7 @@ exports.addEmployee = async (req, res) => {
     const department = req.body.department;
     const organizationId = req.body.organizationId;
 
-    if (!name || !email || !designation || !department) {
+    if (!name || !email || !designation || !department || !organizationId) {
       return res.status(422).json(validation("Please input all field"));
     }
 
@@ -47,11 +47,11 @@ exports.addEmployee = async (req, res) => {
     if (preEmployee)
       return res
         .status(400)
-        .json(validation("Employee already registered.", res.statusCode));
+        .json(validation("Employee already registered."));
 
-    // let organization = await Organization.findByPk(organizationId);
-    // if (!organization)
-    //   return res.status(400).json(validation( "No registered Organization Found.", res.statusCode));
+    let organization = await Organization.findByPk(organizationId);
+    if (!organization)
+      return res.status(400).json(validation( "No registered Organization Found."));
 
     const employee = await Employee.create({
       name: name,
@@ -82,11 +82,11 @@ exports.editEmployee = async (req, res) => {
         .json(validation("Please input all field", res.statusCode));
     }
 
-    // let preEmployee = await Employee.findOne({
-    //   where: { email: req.body.email },
-    // });
-    // if (preEmployee)
-    //   return res.status(400).json({ msg: "Employee already registered." });
+    let preEmployee = await Employee.findOne({
+      where: { email: req.body.email },
+    });
+    if (preEmployee)
+      return res.status(400).json({ msg: "Employee already registered." });
 
     let organization = await Organization.findByPk(organizationId);
     if (!organization)

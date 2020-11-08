@@ -26,7 +26,7 @@ const Employee = sequelize.define("employee", {
     allowNull: false,
   },
   organizationId: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     references: {
       model: Organization,
       key: "id",

@@ -15,13 +15,13 @@ exports.authUser = async (token) => {
      }
 }
 
-// exports.authOrganizer = async () => {
-//   try {
-//     auth_organizer = await Organization.findByPk(organizationId);
+exports.authOrganizer = async () => {
+  try {
+    auth_organizer = await Organization.findByPk(organizationId);
     
-//     console.log(auth_organizer);
-//     //return auth_organizer;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+    console.log(auth_organizer);
+    //return auth_organizer;
+  } catch (error) {
+    throw error;
+  }
+};

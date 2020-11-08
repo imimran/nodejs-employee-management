@@ -1,13 +1,11 @@
-const jwt = require("jsonwebtoken");
-
 const Organization = require("../models/organization");
 const User = require("../models/user");
 const { success, fail, validation } = require("../utils/helper");
-const { authUser } = require("../utils/auth")
+const { authUser } = require("../utils/auth");
+const jwt = require("jsonwebtoken");
 const { jwtKey } = require("../utils/key");
 
 exports.getAllOrganization = async (req, res) => {
-  
   try {
     const token = req.header("auth-token");
     auth_user = await authUser(token);
@@ -16,12 +14,12 @@ exports.getAllOrganization = async (req, res) => {
 
     if (auth_user.isAdmin == 1) {
       organizations = await Organization.findAll();
-    }else{
+    } else {
       organizations = await Organization.findAll({
         where: { userId: auth_user.id },
       });
     }
-    
+
     res
       .status(200)
       .json(success("OK", { data: organizations }, res.statusCode));
@@ -35,7 +33,7 @@ exports.getAllOrganization = async (req, res) => {
 
 // exports.getAllOrganizationByUser = async (req, res) => {
 //   try {
-     
+
 //      let user = await User.findByPk(decoded.id);
 //      if (!user)
 //        return res
@@ -74,7 +72,7 @@ exports.addOrganization = async (req, res) => {
     const email = req.body.email;
     const phone = req.body.phone;
     const address = req.body.address;
-    const userId = req.body.userId
+    const userId = req.body.userId;
 
     if (!name || !email || !phone || !address) {
       return res.status(422).json(validation("Please input all field"));
@@ -98,9 +96,20 @@ exports.addOrganization = async (req, res) => {
       email: email,
       phone: phone,
       address: address,
-      userId: auth_user.id
+      userId: auth_user.id,
     });
-    res.status(200).json(success("OK", { data: organization }, res.statusCode));
+    const orgtoken = jwt.sign(
+      { id: organization.id },
+      jwtKey,
+      {
+        expiresIn: 3600,
+      }
+    );
+    res
+      .status(200)
+      .json(
+        success("OK", { data: organization, token: orgtoken }, res.statusCode)
+      );
   } catch (error) {
     console.log(error);
     res.status(501).json(fail(error, res.statusCode));

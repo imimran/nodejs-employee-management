@@ -65,7 +65,7 @@ exports.addAttendence = async (req, res) => {
       .status(200)
       .json(success("Add Successfully", { data: attendence }, res.statusCode));
   } catch (error) {
-    console.log(error);
+   
     res.status(501).json(fail(error, res.statusCode));
     return;
   }

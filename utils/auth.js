@@ -15,11 +15,9 @@ exports.authUser = async (token) => {
      }
 }
 
-exports.authOrganizer = async () => {
+exports.authOrganizer = async (token) => {
   try {
-    auth_organizer = await Organization.findByPk(organizationId);
-    
-    console.log(auth_organizer);
+;
     //return auth_organizer;
   } catch (error) {
     throw error;

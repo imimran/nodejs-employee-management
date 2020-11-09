@@ -31,27 +31,6 @@ exports.getAllOrganization = async (req, res) => {
   }
 };
 
-// exports.getAllOrganizationByUser = async (req, res) => {
-//   try {
-
-//      let user = await User.findByPk(decoded.id);
-//      if (!user)
-//        return res
-//          .status(400)
-//          .json(validation("User not match.", res.statusCode));
-//     const organizations = await Organization.findOne({
-//       where: { id: user.id },
-//     });
-//     res
-//       .status(200)
-//       .json(success("OK", { data: organizations }, res.statusCode));
-//     return;
-//   } catch (error) {
-//     console.log(error);
-//     res.status(501).json(fail(error, res.statusCode));
-//     return;
-//   }
-// }
 
 exports.getOrganizationById = async (req, res) => {
   try {

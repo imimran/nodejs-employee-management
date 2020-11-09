@@ -63,7 +63,7 @@ exports.addPayroll = async (req, res) => {
       .status(200)
       .json(success("Add Successfully", { data: payroll }, res.statusCode));
   } catch (error) {
-    console.log(error);
+
     res.status(501).json(fail(error, res.statusCode));
     return;
   }

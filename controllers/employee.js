@@ -1,27 +1,15 @@
 const Employee = require("../models/employee");
 const Organization = require("../models/organization");
 const { success, fail, validation } = require("../utils/helper");
-const { authOrganizer } = require("../utils/auth");
+const { authUser } = require("../utils/auth");
 
 exports.getAllEmployee = async (req, res) => {
   try {
+   
 
-       
-        auth_organizer = await authOrganizer();
-
-        let employees;
-
-        if (auth_organizer.isAdmin == 1) {
-          employees = await Employee.findAll();
-        } else {
-          employees = await Employee.findAll({
-            where: { organizationId: auth_organizer.id },
-          });
-        }
-    // const employees = await Employee.findAll();
+    const employees = await Employee.findAll({ where: { organizationId: '26' } });
     res.status(200).json(success("OK", { data: employees }, res.statusCode));
   } catch (error) {
-    console.log(error);
     res.status(501).json(fail(error, res.statusCode));
     return;
   }

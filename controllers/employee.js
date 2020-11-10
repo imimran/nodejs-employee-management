@@ -4,10 +4,18 @@ const { success, fail, validation } = require("../utils/helper");
 const { authUser } = require("../utils/auth");
 
 exports.getAllEmployee = async (req, res) => {
-  try {
-   
+  try {  
+     const token = req.header("auth-token");
+     auth_user = await authUser(token);
 
-    const employees = await Employee.findAll({ where: { organizationId: '26' } });
+ const employees = await Employee.findAll({
+   where: { "$organization.userId$": auth_user.id },
+   include: [
+     {
+       model: Organization,
+     },
+   ],
+ });
     res.status(200).json(success("OK", { data: employees }, res.statusCode));
   } catch (error) {
     res.status(501).json(fail(error, res.statusCode));

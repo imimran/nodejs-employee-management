@@ -1,10 +1,21 @@
 const Announcement = require("../models/announcement");
 const Organization = require("../models/organization");
 const { success, fail, validation } = require("../utils/helper");
+const {authUser} = require("../utils/auth");
+
 
 exports.getAllAnnouncement = async (req, res) => {
   try {
-    const announcements = await Announcement.findAll();
+    const token = req.header('auth-token')
+    auth_user = await authUser(token)
+    const announcements = await Announcement.findAll({
+      where: { "$organization.userId$": auth_user.id },
+      include: [
+        {
+          model: Organization,
+        },
+      ],
+    });
     res
       .status(200)
       .json(success("OK", { data: announcements }, res.statusCode));

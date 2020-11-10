@@ -1,10 +1,23 @@
 const Employee = require("../models/employee");
+const Organization = require("../models/organization");
 const LeaveRequest = require("../models/leaveRequest");
 const { success, fail, validation } = require("../utils/helper");
+const { authUser } = require("../utils/auth");
 
 exports.getAllLeaveRequest = async (req, res) => {
   try {
-    const leaveRequests = await LeaveRequest.findAll();
+    const token = req.header("auth-token");
+    auth_user = await authUser(token);
+    const leaveRequests = await LeaveRequest.findAll({
+      where: {
+        "$organization.userId$": auth_user.id,
+      },
+      include: [
+        {
+          model: Organization,
+        },
+      ],
+    });
     res
       .status(200)
       .json(success("OK", { data: leaveRequests }, res.statusCode));

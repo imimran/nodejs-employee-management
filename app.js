@@ -76,7 +76,9 @@ Organization.hasMany(Attendence);
 Attendence.belongsTo(Organization);
 
 Employee.hasMany(LeveRequest);
-LeveRequest.belongsTo(Employee);  
+LeveRequest.belongsTo(Employee); 
+Organization.hasMany(LeveRequest) 
+LeveRequest.belongsTo(Organization)
 
 Organization.hasMany(Announcement);
 Announcement.belongsTo(Organization);

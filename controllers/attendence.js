@@ -2,10 +2,22 @@ const Attendence = require("../models/attendence");
 const Employee = require("../models/employee");
 const Organization = require("../models/organization");
 const { success, fail, validation } = require("../utils/helper");
+const { authUser } = require("../utils/auth");
 
 exports.getAllAttendence = async (req, res) => {
   try {
-    const attendence = await Attendence.findAll();
+    const token = req.header("auth-token");
+    auth_user = await authUser(token);
+    const attendence = await Attendence.findAll({
+      where: {
+        "$organization.userId$": auth_user.id,
+      },
+      include: [
+        {
+          model: Organization,
+        },
+      ],
+    });
     res.status(200).json(success("OK", { data: attendence }, res.statusCode));
   } catch (error) {
     console.log(error);

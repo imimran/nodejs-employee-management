@@ -6,7 +6,7 @@ const {
  getAllLeaveRequest, getAllLeaveRequestById, addLeaveRequest
 } = require("../../controllers/leaveRequest");
 
-router.get("/", [auth, isEmployee], getAllLeaveRequest);
+router.get("/", [auth], getAllLeaveRequest);
 router.get("/:id", [auth], getAllLeaveRequestById);
 router.post("/", [auth], addLeaveRequest);
 

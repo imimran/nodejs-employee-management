@@ -68,8 +68,7 @@ Employee.hasOne(Payroll)
 Payroll.belongsTo(Employee)
 Organization.hasMany(Payroll);
 Payroll.belongsTo(Organization);
-User.hasMany(Payroll);
-Payroll.belongsTo(User);
+
 
 Employee.hasOne(Attendence);
 Attendence.belongsTo(Employee);

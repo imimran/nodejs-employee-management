@@ -15,13 +15,8 @@ const Payroll = sequelize.define("payroll", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  userId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: User,
-      key: "id",
-    },
-  },
+
+
   organizationId: {
     type: Sequelize.INTEGER,
     references: {

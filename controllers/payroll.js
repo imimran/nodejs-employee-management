@@ -4,25 +4,26 @@ const Organization = require("../models/organization");
 const { success, fail, validation } = require("../utils/helper");
 const { authUser } = require("../utils/auth");
 
+
 exports.getAllPayroll = async (req, res) => {
   try {
+    const token = req.header("auth-token");
+    auth_user = await authUser(token);
 
-        // const token = req.header("auth-token");
-        // auth_user = await authUser(token);
-
-        // let paysolls;
-
-        // if (auth_user.isAdmin == 1) {
-        //   paysolls = await Payroll.findAll();
-        // } else {
-        //   paysolls = await Payroll.findAll({
-        //     where: { userId: auth_user.id },
-        //   });
-        // }
-    const payroll = await Payroll.findAll({ where: { organizationId: "29", employeeId:"5" }});
+    const payrolls = await Payroll.findAll({
+      where: {
+        "$organization.userId$": auth_user.id
+      },
+      include: [
+        {
+          model: Organization,
+        },
+      ],
+    });
     res.status(200).json(success("OK", { data: payrolls }, res.statusCode));
 
   } catch (error) {
+    console.log(error);
     res.status(501).json(fail(error, res.statusCode));
     return;
   }

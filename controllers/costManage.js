@@ -1,10 +1,22 @@
 const CostMange = require("../models/costManage");
 const Organization = require("../models/organization");
 const { success, fail, validation } = require("../utils/helper");
+const { authUser } = require("../utils/auth");
 
 exports.getAllCost = async (req, res) => {
   try {
-    const costs = await CostMange.findAll();
+
+    const token = req.header("auth-token");
+    auth_user = await authUser(token);
+
+    const costs = await CostMange.findAll({
+      where: { "$organization.userId$": auth_user.id },
+      include: [
+        {
+          model: Organization,
+        },
+      ],
+    });
     res.status(200).json(success("OK", { data: costs }, res.statusCode));
   } catch (error) {
     console.log(error);

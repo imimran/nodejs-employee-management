@@ -31,7 +31,6 @@ exports.getAllOrganization = async (req, res) => {
   }
 };
 
-
 exports.getOrganizationById = async (req, res) => {
   try {
     const organization = await Organization.findByPk(req.params.id);
@@ -53,7 +52,7 @@ exports.addOrganization = async (req, res) => {
     const address = req.body.address;
     const userId = req.body.userId;
 
-    if (!name || !email || !phone || !address) {
+    if (!name || !email || !phone || !address || !userId) {
       return res.status(422).json(validation("Please input all field"));
     }
 
@@ -77,13 +76,9 @@ exports.addOrganization = async (req, res) => {
       address: address,
       userId: auth_user.id,
     });
-    const orgtoken = jwt.sign(
-      { id: organization.id },
-      jwtKey,
-      {
-        expiresIn: 3600,
-      }
-    );
+    const orgtoken = jwt.sign({ id: organization.id }, jwtKey, {
+      expiresIn: 3600,
+    });
     res
       .status(200)
       .json(

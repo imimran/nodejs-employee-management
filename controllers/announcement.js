@@ -1,13 +1,12 @@
 const Announcement = require("../models/announcement");
 const Organization = require("../models/organization");
 const { success, fail, validation } = require("../utils/helper");
-const {authUser} = require("../utils/auth");
-
+const { authUser } = require("../utils/auth");
 
 exports.getAllAnnouncement = async (req, res) => {
   try {
-    const token = req.header('auth-token')
-    auth_user = await authUser(token)
+    const token = req.header("auth-token");
+    auth_user = await authUser(token);
     const announcements = await Announcement.findAll({
       where: { "$organization.userId$": auth_user.id },
       include: [
@@ -47,13 +46,15 @@ exports.addAnnouncement = async (req, res) => {
     const message = req.body.message;
     const organizationId = req.body.organizationId;
 
-    if (!message) {
+    if (!message || !organizationId) {
       return res.status(422).json(validation("Please input all field"));
     }
 
-    // let organization = await Organization.findByPk(organizationId);
-    // if (!organization)
-    //   return res.status(400).json(validation( "No registered Organization Found.", res.statusCode ));
+    let organization = await Organization.findByPk(organizationId);
+    if (!organization)
+      return res
+        .status(400)
+        .json(validation("No registered Organization Found."));
 
     const announcement = await Announcement.create({
       message: message,

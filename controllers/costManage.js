@@ -5,7 +5,6 @@ const { authUser } = require("../utils/auth");
 
 exports.getAllCost = async (req, res) => {
   try {
-
     const token = req.header("auth-token");
     auth_user = await authUser(token);
 
@@ -48,17 +47,15 @@ exports.addCost = async (req, res) => {
     const utilityBill = req.body.utilityBill;
     const organizationId = req.body.organizationId;
 
-    if (!staffSalary || !officeRent || !utilityBill ) {
-      return res
-        .status(422)
-        .json(validation("Please input all field"));
+    if (!staffSalary || !officeRent || !utilityBill || !organizationId) {
+      return res.status(422).json(validation("Please input all field"));
     }
 
-    // let organization = await Organization.findByPk(organizationId);
-    // if (!organization)
-    //   return res
-    //     .status(400)
-    //     .json(validation("No registered Organization Found.", res.statusCode));
+    let organization = await Organization.findByPk(organizationId);
+    if (!organization)
+      return res
+        .status(400)
+        .json(validation("No registered Organization Found."));
 
     const cost = await CostMange.create({
       staffSalary: staffSalary,

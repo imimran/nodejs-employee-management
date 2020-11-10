@@ -4,18 +4,18 @@ const { success, fail, validation } = require("../utils/helper");
 const { authUser } = require("../utils/auth");
 
 exports.getAllEmployee = async (req, res) => {
-  try {  
-     const token = req.header("auth-token");
-     auth_user = await authUser(token);
+  try {
+    const token = req.header("auth-token");
+    auth_user = await authUser(token);
 
- const employees = await Employee.findAll({
-   where: { "$organization.userId$": auth_user.id },
-   include: [
-     {
-       model: Organization,
-     },
-   ],
- });
+    const employees = await Employee.findAll({
+      where: { "$organization.userId$": auth_user.id },
+      include: [
+        {
+          model: Organization,
+        },
+      ],
+    });
     res.status(200).json(success("OK", { data: employees }, res.statusCode));
   } catch (error) {
     res.status(501).json(fail(error, res.statusCode));
@@ -55,13 +55,13 @@ exports.addEmployee = async (req, res) => {
       where: { email: req.body.email },
     });
     if (preEmployee)
-      return res
-        .status(400)
-        .json(validation("Employee already registered."));
+      return res.status(400).json(validation("Employee already registered."));
 
     let organization = await Organization.findByPk(organizationId);
     if (!organization)
-      return res.status(400).json(validation( "No registered Organization Found."));
+      return res
+        .status(400)
+        .json(validation("No registered Organization Found."));
 
     const employee = await Employee.create({
       name: name,

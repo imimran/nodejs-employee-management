@@ -4,7 +4,6 @@ const Organization = require("../models/organization");
 const { success, fail, validation } = require("../utils/helper");
 const { authUser } = require("../utils/auth");
 
-
 exports.getAllPayroll = async (req, res) => {
   try {
     const token = req.header("auth-token");
@@ -12,7 +11,7 @@ exports.getAllPayroll = async (req, res) => {
 
     const payrolls = await Payroll.findAll({
       where: {
-        "$organization.userId$": auth_user.id
+        "$organization.userId$": auth_user.id,
       },
       include: [
         {
@@ -21,7 +20,6 @@ exports.getAllPayroll = async (req, res) => {
       ],
     });
     res.status(200).json(success("OK", { data: payrolls }, res.statusCode));
-
   } catch (error) {
     console.log(error);
     res.status(501).json(fail(error, res.statusCode));
@@ -51,23 +49,19 @@ exports.addPayroll = async (req, res) => {
     const employeeId = req.body.employeeId;
     const organizationId = req.body.organizationId;
 
-    if (!salary) {
-      return res
-        .status(422)
-        .json(validation("Please input all field"));
+    if (!salary || !employeeId || !organizationId) {
+      return res.status(422).json(validation("Please input all field"));
     }
 
-    // let employee = await Employee.findByPk(employeeId);
-    // if (!employee)
-    //   return res
-    //     .status(400)
-    //     .json(validation("No registered Employee Found.", res.statusCode));
+    let employee = await Employee.findByPk(employeeId);
+    if (!employee)
+      return res.status(400).json(validation("No registered Employee Found."));
 
-    // let organization = await Organization.findByPk(organizationId);
-    // if (!organization)
-    //   return res
-    //     .status(400)
-    //     .json(validation("No registered Organization Found.", res.statusCode));
+    let organization = await Organization.findByPk(organizationId);
+    if (!organization)
+      return res
+        .status(400)
+        .json(validation("No registered Organization Found."));
 
     const payroll = await Payroll.create({
       salary: salary,
@@ -78,7 +72,6 @@ exports.addPayroll = async (req, res) => {
       .status(200)
       .json(success("Add Successfully", { data: payroll }, res.statusCode));
   } catch (error) {
-
     res.status(501).json(fail(error, res.statusCode));
     return;
   }

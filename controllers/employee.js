@@ -89,14 +89,14 @@ exports.editEmployee = async (req, res) => {
     if (!name || !email || !designation || !department || !organizationId) {
       return res
         .status(422)
-        .json(validation("Please input all field", res.statusCode));
+        .json(validation("Please input all field"));
     }
 
-    let preEmployee = await Employee.findOne({
-      where: { email: req.body.email },
-    });
-    if (preEmployee)
-      return res.status(400).json({ msg: "Employee already registered." });
+    // let preEmployee = await Employee.findOne({
+    //   where: { email: req.body.email },
+    // });
+    // if (preEmployee)
+    //   return res.status(400).json({ msg: "Employee already registered." });
 
     let organization = await Organization.findByPk(organizationId);
     if (!organization)
@@ -118,7 +118,7 @@ exports.editEmployee = async (req, res) => {
     res
       .status(200)
       .json(
-        success("Edit Successfully", { data: editEmployee }, res.statusCode)
+        success("Edit Successfully", {}, res.statusCode)
       );
   } catch (error) {
     console.log(error);

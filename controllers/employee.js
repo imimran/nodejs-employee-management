@@ -117,8 +117,9 @@ exports.editEmployee = async (req, res) => {
     );
     res
       .status(200)
+
       .json(
-        success("Edit Successfully", {}, res.statusCode)
+        success("Edit Successfully", {data: "success" }, res.statusCode)
       );
   } catch (error) {
     console.log(error);
@@ -137,7 +138,7 @@ exports.deleteEmployee = async (req, res) => {
     res
       .status(200)
       .json(
-        success("Remove Employee", { data: removeEmployee }, res.statusCode)
+        success("Remove Employee", { data: "Success" }, res.statusCode)
       );
 
     return;

@@ -16,6 +16,9 @@ exports.getAllLeaveRequest = async (req, res) => {
         {
           model: Organization,
         },
+        {
+          model: Employee,
+        }
       ],
     });
     res

@@ -17,6 +17,9 @@ exports.getAllPayroll = async (req, res) => {
         {
           model: Organization,
         },
+        {
+          model: Employee,
+        },
       ],
     });
     res.status(200).json(success("OK", { data: payrolls }, res.statusCode));

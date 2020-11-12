@@ -16,6 +16,9 @@ exports.getAllAttendence = async (req, res) => {
         {
           model: Organization,
         },
+        {
+          model: Employee,
+        },
       ],
     });
     res.status(200).json(success("OK", { data: attendence }, res.statusCode));

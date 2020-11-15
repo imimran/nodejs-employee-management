@@ -16,6 +16,15 @@ const Payroll = sequelize.define("payroll", {
     allowNull: false,
   },
 
+  month: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+
+  year: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
 
   organizationId: {
     type: Sequelize.INTEGER,

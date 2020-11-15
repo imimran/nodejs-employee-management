@@ -49,10 +49,12 @@ exports.getPayrollById = async (req, res) => {
 exports.addPayroll = async (req, res) => {
   try {
     const salary = req.body.salary;
+    const month = req.body.month;
+    const year = req.body.year;
     const employeeId = req.body.employeeId;
     const organizationId = req.body.organizationId;
 
-    if (!salary || !employeeId || !organizationId) {
+    if (!salary || !month || !year || !employeeId || !organizationId) {
       return res.status(422).json(validation("Please input all field"));
     }
 
@@ -68,6 +70,8 @@ exports.addPayroll = async (req, res) => {
 
     const payroll = await Payroll.create({
       salary: salary,
+      month: month,
+      year:year,
       employeeId: employeeId,
       organizationId: organizationId,
     });

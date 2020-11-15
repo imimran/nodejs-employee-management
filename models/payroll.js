@@ -22,7 +22,7 @@ const Payroll = sequelize.define("payroll", {
   },
 
   year: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DOUBLE,
     allowNull: false,
   },
 

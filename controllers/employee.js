@@ -2,6 +2,38 @@ const Employee = require("../models/employee");
 const Organization = require("../models/organization");
 const { success, fail, validation } = require("../utils/helper");
 const { authUser } = require("../utils/auth");
+const multer = require('multer')
+const fs = require("fs");
+var path = require("path");
+const upload = multer({ dest: 'uploads/' })
+
+
+// const storage = multer.diskStorage({
+//   destination: 'uploads/',
+//   filename: function (req, file, cb) {
+//     cb(null,file.fieldname + '-' + new Date().toISOString() + path.extname(file.originalname));
+//   },
+// });
+
+// const fileFilter = (req, file, cb) => {
+//   // reject a file
+//   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+//     cb(null, true);
+//   } else {
+//     cb(null, false);
+//   }
+// };
+
+// const upload = multer({
+//   storage: storage,
+//   limits: {
+//     fileSize: 1024 * 1024 * 5,
+//   },
+//   //fileFilter: fileFilter,
+// });
+
+
+
 
 exports.getAllEmployee = async (req, res) => {
   try {
@@ -39,13 +71,22 @@ exports.getEmployeeById = async (req, res) => {
   }
 };
 
-exports.addEmployee = async (req, res) => {
+(module.exports.upload = upload.single("image")),
+  (req, res, next) => {
+    console.log(image);
+    next();
+  };
+
+exports.addEmployee = async (req, res, next) => {
+  console.log( "data: ", req.file, req.body);
   try {
     const name = req.body.name;
     const email = req.body.email;
     const designation = req.body.designation;
     const department = req.body.department;
     const organizationId = req.body.organizationId;
+    const image = req.file.filename
+    
 
     if (!name || !email || !designation || !department || !organizationId) {
       return res.status(422).json(validation("Please input all field"));
@@ -69,6 +110,7 @@ exports.addEmployee = async (req, res) => {
       designation: designation,
       department: department,
       organizationId: organizationId,
+      image:image
     });
     res.status(200).json(success("OK", { data: employee }, res.statusCode));
   } catch (error) {
@@ -76,6 +118,7 @@ exports.addEmployee = async (req, res) => {
     res.status(501).json(fail(error, res.statusCode));
     return;
   }
+  next()
 };
 
 exports.editEmployee = async (req, res) => {
@@ -83,7 +126,7 @@ exports.editEmployee = async (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
     const designation = req.body.designation;
-    const department = req.body.department;
+    const department = req.body.department; 
     const organizationId = req.body.organizationId;
 
     if (!name || !email || !designation || !department || !organizationId) {
@@ -92,11 +135,7 @@ exports.editEmployee = async (req, res) => {
         .json(validation("Please input all field"));
     }
 
-    // let preEmployee = await Employee.findOne({
-    //   where: { email: req.body.email },
-    // });
-    // if (preEmployee)
-    //   return res.status(400).json({ msg: "Employee already registered." });
+  
 
     let organization = await Organization.findByPk(organizationId);
     if (!organization)

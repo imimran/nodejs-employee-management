@@ -27,6 +27,7 @@ const CostManage = require("./models/costManage");
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true}))
 app.use(express.static(__dirname+"./uploads"))
+app.use("/uploads", express.static("uploads"));
 app.use(cors())
 
 app.use("/api/auth", authRoutes);

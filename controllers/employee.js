@@ -9,9 +9,11 @@ const upload = multer({ dest: 'uploads/' })
 
 
 // const storage = multer.diskStorage({
-//   destination: 'uploads/',
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/");
+//   },
 //   filename: function (req, file, cb) {
-//     cb(null,file.fieldname + '-' + new Date().toISOString() + path.extname(file.originalname));
+//     cb(null, new Date().toISOString() + file.originalname);
 //   },
 // });
 
@@ -26,9 +28,9 @@ const upload = multer({ dest: 'uploads/' })
 
 // const upload = multer({
 //   storage: storage,
-//   limits: {
-//     fileSize: 1024 * 1024 * 5,
-//   },
+//   // limits: {
+//   //   fileSize: 1024 * 1024 * 5,
+//   // },
 //   //fileFilter: fileFilter,
 // });
 

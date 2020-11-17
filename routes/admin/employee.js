@@ -15,7 +15,7 @@ router.get("/", auth,  getAllEmployee);
 router.get("/:id", auth, getEmployeeById)
 router.post("/", auth, upload, addEmployee);
 
-router.put("/:id", auth,  editEmployee);
+router.put("/:id", auth, upload, editEmployee);
 router.delete("/:id", auth, deleteEmployee);
 
 module.exports = router;

@@ -5,34 +5,34 @@ const { authUser } = require("../utils/auth");
 const multer = require('multer')
 const fs = require("fs");
 var path = require("path");
-const upload = multer({ dest: 'uploads/' })
+//const upload = multer({ dest: 'uploads/' })
 
 
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "uploads/");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, new Date().toISOString() + file.originalname);
-//   },
-// });
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
+  },
+});
 
-// const fileFilter = (req, file, cb) => {
-//   // reject a file
-//   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-//     cb(null, true);
-//   } else {
-//     cb(null, false);
-//   }
-// };
+const fileFilter = (req, file, cb) => {
+  // reject a file
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
 
-// const upload = multer({
-//   storage: storage,
-//   // limits: {
-//   //   fileSize: 1024 * 1024 * 5,
-//   // },
-//   //fileFilter: fileFilter,
-// });
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5,
+  },
+  fileFilter: fileFilter,
+});
 
 
 
@@ -130,6 +130,7 @@ exports.editEmployee = async (req, res) => {
     const designation = req.body.designation;
     const department = req.body.department; 
     const organizationId = req.body.organizationId;
+    const image = req.file.filename;
 
     if (!name || !email || !designation || !department || !organizationId) {
       return res
@@ -151,6 +152,7 @@ exports.editEmployee = async (req, res) => {
         designation: req.body.designation,
         department: req.body.department,
         organizationId: req.body.organizationId,
+        image: req.file.filename,
       },
       {
         where: { id: req.params.id },

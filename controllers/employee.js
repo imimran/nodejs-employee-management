@@ -2,9 +2,8 @@ const Employee = require("../models/employee");
 const Organization = require("../models/organization");
 const { success, fail, validation } = require("../utils/helper");
 const { authUser } = require("../utils/auth");
+const path = require('path')
 const multer = require('multer')
-const fs = require("fs");
-var path = require("path");
 //const upload = multer({ dest: 'uploads/' })
 
 
@@ -33,8 +32,6 @@ const upload = multer({
   },
   fileFilter: fileFilter,
 });
-
-
 
 
 exports.getAllEmployee = async (req, res) => {
@@ -74,7 +71,8 @@ exports.getEmployeeById = async (req, res) => {
 };
 
 (module.exports.upload = upload.single("image")),
-  (req, res, next) => {
+  async(req, res, next) => {
+    const image = req.file.path
     console.log(image);
     next();
   };
@@ -87,10 +85,10 @@ exports.addEmployee = async (req, res, next) => {
     const designation = req.body.designation;
     const department = req.body.department;
     const organizationId = req.body.organizationId;
-    const image = req.file.filename
+    const image = req.file.filename;
     
 
-    if (!name || !email || !designation || !department || !organizationId) {
+    if (!name || !email || !designation || !department || !organizationId || !image) {
       return res.status(422).json(validation("Please input all field"));
     }
 
@@ -112,7 +110,7 @@ exports.addEmployee = async (req, res, next) => {
       designation: designation,
       department: department,
       organizationId: organizationId,
-      image:image
+      image: image,
     });
     res.status(200).json(success("OK", { data: employee }, res.statusCode));
   } catch (error) {

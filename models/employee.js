@@ -21,6 +21,18 @@ const Employee = sequelize.define("employee", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  phone: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  address: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  salary: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
   designation: {
     type: Sequelize.STRING,
     allowNull: false,

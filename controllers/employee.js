@@ -2,10 +2,9 @@ const Employee = require("../models/employee");
 const Organization = require("../models/organization");
 const { success, fail, validation } = require("../utils/helper");
 const { authUser } = require("../utils/auth");
-const path = require('path')
-const multer = require('multer')
+const path = require("path");
+const multer = require("multer");
 //const upload = multer({ dest: 'uploads/' })
-
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -33,7 +32,6 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-
 exports.getAllEmployee = async (req, res) => {
   try {
     const token = req.header("auth-token");
@@ -60,7 +58,14 @@ exports.getEmployeeById = async (req, res) => {
       throw "No Match ID";
     }
 
-    const employee = await Employee.findByPk(req.params.id);
+    const employee = await Employee.findOne({
+      where: { id: req.params.id },
+      include: [
+        {
+          model: Organization,
+        },
+      ],
+    });
     res.status(200).json(success("OK", { data: employee }, res.statusCode));
     return;
   } catch (error) {
@@ -71,24 +76,36 @@ exports.getEmployeeById = async (req, res) => {
 };
 
 (module.exports.upload = upload.single("image")),
-  async(req, res, next) => {
-    const image = req.file.path
+  async (req, res, next) => {
+    const image = req.file.path;
     console.log(image);
     next();
   };
 
 exports.addEmployee = async (req, res, next) => {
-  console.log( "data: ", req.file, req.body);
+  //console.log("data: ", req.file, req.body);
   try {
     const name = req.body.name;
     const email = req.body.email;
+    const phone = req.body.phone;
+    const address = req.body.address;
+    const salary = req.body.salary;
     const designation = req.body.designation;
     const department = req.body.department;
     const organizationId = req.body.organizationId;
     const image = req.file.filename;
-    
 
-    if (!name || !email || !designation || !department || !organizationId || !image) {
+    if (
+      !name ||
+      !email ||
+      !phone ||
+      !address ||
+      !salary ||
+      !designation ||
+      !department ||
+      !organizationId ||
+      !image
+    ) {
       return res.status(422).json(validation("Please input all field"));
     }
 
@@ -107,6 +124,9 @@ exports.addEmployee = async (req, res, next) => {
     const employee = await Employee.create({
       name: name,
       email: email,
+      phone: phone,
+      address: address,
+      salary: salary,
       designation: designation,
       department: department,
       organizationId: organizationId,
@@ -118,25 +138,34 @@ exports.addEmployee = async (req, res, next) => {
     res.status(501).json(fail(error, res.statusCode));
     return;
   }
-  next()
+  next();
 };
 
 exports.editEmployee = async (req, res) => {
   try {
     const name = req.body.name;
     const email = req.body.email;
+    const phone = req.body.phone;
+    const address = req.body.address;
+    const salary = req.body.salary;
     const designation = req.body.designation;
-    const department = req.body.department; 
+    const department = req.body.department;
     const organizationId = req.body.organizationId;
     const image = req.file.filename;
 
-    if (!name || !email || !designation || !department || !organizationId) {
-      return res
-        .status(422)
-        .json(validation("Please input all field"));
+    if (
+      !name ||
+      !email ||
+      !phone ||
+      !address ||
+      !salary ||
+      !designation ||
+      !department ||
+      !organizationId ||
+      !image
+    ) {
+      return res.status(422).json(validation("Please input all field"));
     }
-
-  
 
     let organization = await Organization.findByPk(organizationId);
     if (!organization)
@@ -147,6 +176,9 @@ exports.editEmployee = async (req, res) => {
       {
         name: req.body.name,
         email: req.body.email,
+        phone: phone,
+        address: address,
+        salary: salary,
         designation: req.body.designation,
         department: req.body.department,
         organizationId: req.body.organizationId,
@@ -159,9 +191,7 @@ exports.editEmployee = async (req, res) => {
     res
       .status(200)
 
-      .json(
-        success("Edit Successfully", {data: "success" }, res.statusCode)
-      );
+      .json(success("Edit Successfully", { data: "success" }, res.statusCode));
   } catch (error) {
     console.log(error);
     res.status(501).json(fail(error, res.statusCode));
@@ -178,9 +208,7 @@ exports.deleteEmployee = async (req, res) => {
     });
     res
       .status(200)
-      .json(
-        success("Remove Employee", { data: "Success" }, res.statusCode)
-      );
+      .json(success("Remove Employee", { data: "Success" }, res.statusCode));
 
     return;
   } catch (error) {

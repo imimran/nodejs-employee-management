@@ -47,12 +47,12 @@ exports.getAllAttendenceById = async (req, res) => {
 
 exports.addAttendence = async (req, res) => {
   try {
-    const month = req.body.month;
-    const leaves = req.body.leaves;
+    const day = req.body.day;
+    const status = req.body.status;
     const employeeId = req.body.employeeId;
     const organizationId = req.body.organizationId;
 
-    if (!month || !leaves || !employeeId || !organizationId) {
+    if (!day || !status || !employeeId || !organizationId) {
       return res.status(422).json(validation("Please input all field"));
     }
 
@@ -67,8 +67,8 @@ exports.addAttendence = async (req, res) => {
         .json(validation("No registered Organization Found."));
 
     const attendence = await Attendence.create({
-      month: month,
-      leaves: leaves,
+      day: day,
+      status: status,
       employeeId: employeeId,
       organizationId: organizationId,
     });

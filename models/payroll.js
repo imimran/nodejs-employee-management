@@ -11,16 +11,17 @@ const Payroll = sequelize.define("payroll", {
     autoIncrement: true,
     primaryKey: true,
   },
-  salary: {
+  pay: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-
+  due: {
+    type: Sequelize.INTEGER,
+  },
   month: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-
   year: {
     type: Sequelize.DOUBLE,
     allowNull: false,

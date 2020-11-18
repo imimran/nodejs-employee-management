@@ -10,12 +10,12 @@ const Attendence = sequelize.define("attendence", {
     autoIncrement: true,
     primaryKey: true,
   },
-  month: {
-    type: Sequelize.STRING,
-    allowNull: false,
+  day: {
+    type: Sequelize.DATEONLY,
+    
   },
-  leaves: {
-    type: Sequelize.INTEGER,
+  status: {
+    type: Sequelize.STRING,
     allowNull: false,
   },
   organizationId: {

@@ -14,8 +14,16 @@ const LeaveRequest = sequelize.define("leaverequest", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  organizationId: {
+  reason: {
     type: Sequelize.STRING,
+    allowNull: false,
+  },
+  status: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  organizationId: {
+    type: Sequelize.INTEGER,
     references: {
       model: Organization,
       key: "id",

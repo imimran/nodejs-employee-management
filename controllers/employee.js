@@ -151,7 +151,7 @@ exports.editEmployee = async (req, res) => {
     const designation = req.body.designation;
     const department = req.body.department;
     const organizationId = req.body.organizationId;
-    const image = req.file.filename;
+    //const image = req.file.filename;
 
     if (
       !name ||
@@ -161,8 +161,8 @@ exports.editEmployee = async (req, res) => {
       !salary ||
       !designation ||
       !department ||
-      !organizationId ||
-      !image
+      !organizationId 
+ 
     ) {
       return res.status(422).json(validation("Please input all field"));
     }
@@ -182,7 +182,7 @@ exports.editEmployee = async (req, res) => {
         designation: req.body.designation,
         department: req.body.department,
         organizationId: req.body.organizationId,
-        image: req.file.filename,
+        //image: req.file.filename,
       },
       {
         where: { id: req.params.id },

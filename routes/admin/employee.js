@@ -12,7 +12,7 @@ const {
 } = require("../../controllers/employee");
 
 router.get("/", auth,  getAllEmployee);
-router.get("/:id", auth, getEmployeeById)
+router.get("/:id", auth, upload, getEmployeeById)
 router.post("/", auth, upload, addEmployee);
 
 router.put("/:id", auth, upload, editEmployee);

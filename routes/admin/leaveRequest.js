@@ -8,6 +8,6 @@ const {
 
 router.get("/", [auth], getAllLeaveRequest);
 router.get("/:id", [auth], getAllLeaveRequestById);
-router.post("/", [auth], addLeaveRequest);
+router.post("/", [auth, isEmployee], addLeaveRequest);
 
 module.exports = router;

@@ -42,8 +42,15 @@ router.post('/login', async (req, res) => {
     .status(200)
     .json(
       success(
-        'Your Token! ',
-        { data: token, id: user.id, email: user.email },
+        "Your Token! ",
+        {
+          data: token,
+          id: user.id,
+          email: user.email,
+          isOrganizer: user.isOrganizer,
+          isAdmin: user.isAdmin,
+          isEmployee: user.isEmployee,
+        },
         res.statusCode
       )
     );

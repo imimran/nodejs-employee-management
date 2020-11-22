@@ -59,12 +59,29 @@ exports.addUser = async (req, res) => {
     user.password = await bcrypt.hash(user.password, salt);
     await user.save();
 
-    const token = jwt.sign({ id: user.id, email: user.email }, jwtKey, {
-      expiresIn: 3600,
-    });
+    const token = jwt.sign(
+      { id: user.id, email: user.email, isOrganizer: user.isOrganizer, isAdmin: user.isAdmin, isEmployee: user.isEmployee },
+      jwtKey,
+      {
+        expiresIn: 3600,
+      }
+    );
     res
       .status(200)
-      .json(success("Your Token! ", { data: token }, res.statusCode));
+      .json(
+        success(
+          "Your Token! ",
+          {
+            data: token,
+            id: user.id,
+            email: user.email,
+            isOrganizer: user.isOrganizer,
+            isAdmin: user.isAdmin,
+            isEmployee: user.isEmployee,
+          },
+          res.statusCode
+        )
+      );
     // res.status(200).json(success('OK', { data: user }, res.statusCode));
 
     return;

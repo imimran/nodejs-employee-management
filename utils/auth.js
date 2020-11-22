@@ -15,11 +15,3 @@ exports.authUser = async (token) => {
      }
 }
 
-exports.authOrganizer = async (token) => {
-  try {
-;
-    //return auth_organizer;
-  } catch (error) {
-    throw error;
-  }
-};

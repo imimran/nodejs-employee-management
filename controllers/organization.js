@@ -50,9 +50,9 @@ exports.addOrganization = async (req, res) => {
     const email = req.body.email;
     const phone = req.body.phone;
     const address = req.body.address;
-    const userId = req.body.userId;
+    const userId =  auth_user.id;
 
-    if (!name || !email || !phone || !address || !userId) {
+    if(!name || !email || !phone || !address || !userId) {
       return res.status(422).json(validation("Please input all field"));
     }
 

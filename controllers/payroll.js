@@ -51,11 +51,11 @@ exports.addPayroll = async (req, res) => {
     const pay = req.body.pay;
      const due = req.body.due;
     const month = req.body.month;
-    const year = req.body.year;
+ 
     const employeeId = req.body.employeeId;
     const organizationId = req.body.organizationId;
 
-    if (!pay || !pay || !month || !year || !employeeId || !organizationId) {
+    if (!pay || !pay || !month  || !employeeId || !organizationId) {
       return res.status(422).json(validation("Please input all field"));
     }
 
@@ -73,7 +73,7 @@ exports.addPayroll = async (req, res) => {
       pay: pay,
       due: due,
       month: month,
-      year:year,
+     
       employeeId: employeeId,
       organizationId: organizationId,
     });

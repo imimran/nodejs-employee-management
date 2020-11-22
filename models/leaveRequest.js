@@ -11,7 +11,7 @@ const LeaveRequest = sequelize.define("leaverequest", {
     primaryKey: true,
   },
   leaveForDays: {
-    type: Sequelize.JSON(Sequelize.DATEONLY),
+    type: Sequelize.JSON,
     allowNull: false,
   },
   reason: {

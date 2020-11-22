@@ -19,11 +19,7 @@ const Payroll = sequelize.define("payroll", {
     type: Sequelize.INTEGER,
   },
   month: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-  year: {
-    type: Sequelize.DOUBLE,
+    type: Sequelize.JSON,
     allowNull: false,
   },
 

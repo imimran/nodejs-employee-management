@@ -7,6 +7,7 @@ const app = express();
 
 const userRoutes = require('./routes/user/user')
 const authRoutes = require('./routes/user/auth')
+const authEmployee = require("./routes/user/employee");
 const organizationRoute = require('./routes/admin/organization')
 const employeeRoute = require("./routes/admin/employee");
 const payrollRoute = require("./routes/admin/payroll");
@@ -31,6 +32,7 @@ app.use("/uploads", express.static("./uploads"));
 app.use(cors())
 
 app.use("/api/auth", authRoutes);
+app.use("/api/auth", authEmployee);
 app.use('/api/user', userRoutes)
 app.use('/api/company', organizationRoute)
 app.use("/api/employee", employeeRoute);

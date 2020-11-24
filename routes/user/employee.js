@@ -36,6 +36,7 @@ router.post("/employee-login", async (req, res) => {
     {
       id: employee.id,
       email: employee.email,
+      isLogin: employee.isLogin
       
      
     },
@@ -48,7 +49,7 @@ router.post("/employee-login", async (req, res) => {
         data: token,
         id: employee.id,
         email: employee.email,
-       
+        isLogin: employee.isLogin,
       },
       res.statusCode
     )

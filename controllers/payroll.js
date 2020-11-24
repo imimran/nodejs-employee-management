@@ -2,18 +2,16 @@ const Payroll = require("../models/payroll");
 const Employee = require("../models/employee");
 const Organization = require("../models/organization");
 const { success, fail, validation } = require("../utils/helper");
-const { authUser } = require("../utils/auth");
+const { authUser, authEmployee } = require("../utils/auth");
 
 exports.getAllPayroll = async (req, res) => {
   try {
-    const token = req.header("auth-token");
-    auth_user = await authUser(token);
 
-    const payrolls = await Payroll.findAll({
-      where: {
-        "$organization.userId$": auth_user.id,
-      },
-      include: [
+        const token = req.header("auth-token");
+        auth_employee = await authEmployee(token);
+       const payrolls = await Payroll.findAll({
+         where: { "$organization.userId$": auth_employee },
+            include: [
         {
           model: Organization,
         },
@@ -22,6 +20,22 @@ exports.getAllPayroll = async (req, res) => {
         },
       ],
     });
+    // const token = req.header("auth-token");
+    // auth_user = await authUser(token);
+
+    // const payrolls = await Payroll.findAll({
+    //   where: {
+    //     "$organization.userId$": auth_user.id,
+    //   },
+    //   include: [
+    //     {
+    //       model: Organization,
+    //     },
+    //     {
+    //       model: Employee,
+    //     },
+    //   ],
+    // });
     res.status(200).json(success("OK", { data: payrolls }, res.statusCode));
   } catch (error) {
     console.log(error);

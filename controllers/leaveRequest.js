@@ -2,7 +2,7 @@ const Employee = require("../models/employee");
 const Organization = require("../models/organization");
 const LeaveRequest = require("../models/leaveRequest");
 const { success, fail, validation } = require("../utils/helper");
-const { authUser } = require("../utils/auth");
+const { authUser, authEmployee } = require("../utils/auth");
 
 exports.getAllLeaveRequest = async (req, res) => {
   try {
@@ -10,7 +10,7 @@ exports.getAllLeaveRequest = async (req, res) => {
     auth_user = await authUser(token);
     const leaveRequests = await LeaveRequest.findAll({
       where: {
-        "$organization.userId$": auth_user.id,
+        "$organization.userId$": authEmployee.id,
       },
       include: [
         {

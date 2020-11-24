@@ -1,10 +1,21 @@
 const Announcement = require("../models/announcement");
 const Organization = require("../models/organization");
 const { success, fail, validation } = require("../utils/helper");
-const { authUser } = require("../utils/auth");
+const { authUser, authEmployee } = require("../utils/auth");
 
 exports.getAllAnnouncement = async (req, res) => {
   try {
+
+        // const token = req.header("auth-token");
+        // auth_employee = await authEmployee(token);
+        // const announcements = await Announcement.findAll({
+        //   where: { "$organization.userId$": auth_employee.id },
+        //   include: [
+        //     {
+        //       model: Organization,
+        //     },
+        //   ],
+        // });
     const token = req.header("auth-token");
     auth_user = await authUser(token);
     const announcements = await Announcement.findAll({

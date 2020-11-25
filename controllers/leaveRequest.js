@@ -6,12 +6,16 @@ const { authUser, authEmployee } = require("../utils/auth");
 
 exports.getAllLeaveRequest = async (req, res) => {
   try {
+
     const token = req.header("auth-token");
-    auth_user = await authUser(token);
+
+    auth_employee = await authEmployee(token);
+
     const leaveRequests = await LeaveRequest.findAll({
       where: {
-        "$organization.userId$": auth_user.id,
+        $employeeId$: auth_employee.id,
       },
+
       include: [
         {
           model: Organization,
@@ -21,6 +25,22 @@ exports.getAllLeaveRequest = async (req, res) => {
         },
       ],
     });
+    
+    // const token = req.header("auth-token");
+    // auth_user = await authUser(token);
+    // const leaveRequests = await LeaveRequest.findAll({
+    //   where: {
+    //     "$organization.userId$": auth_user.id,
+    //   },
+    //   include: [
+    //     {
+    //       model: Organization,
+    //     },
+    //     {
+    //       model: Employee,
+    //     },
+    //   ],
+    // });
     res
       .status(200)
       .json(success("OK", { data: leaveRequests }, res.statusCode));

@@ -87,6 +87,7 @@ LeveRequest.belongsTo(Organization)
 
 Organization.hasMany(Announcement);
 Announcement.belongsTo(Organization);
+Announcement.belongsTo(Employee);
 
 Organization.hasMany(CostManage);
 CostManage.belongsTo(Organization);

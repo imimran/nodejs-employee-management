@@ -21,12 +21,14 @@ exports.getAllPayroll = async (req, res) => {
     //   ],
     // });
     const token = req.header("auth-token");
-    auth_user = await authUser(token);
+ 
+     auth_employee = await authEmployee(token);
 
     const payrolls = await Payroll.findAll({
       where: {
-        "$organization.userId$": auth_user.id,
+        "$employeeId$": auth_employee.id,
       },
+    
       include: [
         {
           model: Organization,

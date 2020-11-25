@@ -2,15 +2,20 @@ const Attendence = require("../models/attendence");
 const Employee = require("../models/employee");
 const Organization = require("../models/organization");
 const { success, fail, validation } = require("../utils/helper");
-const { authUser } = require("../utils/auth");
+const { authUser, authEmployee } = require("../utils/auth");
 
 exports.getAllAttendence = async (req, res) => {
   try {
     const token = req.header("auth-token");
-    auth_user = await authUser(token);
+    //auth_user = await authUser(token);
+
+      auth_employee = await authEmployee(token);
     const attendence = await Attendence.findAll({
       where: {
-        "$organization.userId$": auth_user.id,
+        // "$organization.userId$": auth_user.id,
+   
+          $employeeId$: auth_employee.id,
+        
       },
       include: [
         {

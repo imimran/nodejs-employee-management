@@ -7,25 +7,34 @@ const { authUser, authEmployee } = require("../utils/auth");
 exports.getAllAttendence = async (req, res) => {
   try {
     const token = req.header("auth-token");
-    //auth_user = await authUser(token);
-
-      auth_employee = await authEmployee(token);
-    const attendence = await Attendence.findAll({
-      where: {
-        // "$organization.userId$": auth_user.id,
+    auth_user = await authUser(token);
+    console.log("auth-user", auth_user);
+    auth_employee = await authEmployee(token);
+    console.log("auth-employee", auth_employee);
+    console.log("auth-employee", auth_employee.isValid);
    
+
+    let attendence;
+    if (auth_employee.isValid === 1) {
+      attendence = await Attendence.findAll({
+        where: {
+          // "$organization.userId$": auth_user.id,
+
           $employeeId$: auth_employee.id,
-        
-      },
-      include: [
-        {
-          model: Organization,
         },
-        {
-          model: Employee,
-        },
-      ],
-    });
+        include: [
+          {
+            model: Organization,
+          },
+          {
+            model: Employee,
+          },
+        ],
+      });
+    } else {
+      attendence = await Attendence.findAll()
+    }
+
     res.status(200).json(success("OK", { data: attendence }, res.statusCode));
   } catch (error) {
     console.log(error);

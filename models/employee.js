@@ -25,9 +25,9 @@ const Employee = sequelize.define("employee", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  isLogin: {
+  isValid: {
     type: Sequelize.BOOLEAN,
-    defaultValue: false,
+    defaultValue: true,
   },
   phone: {
     type: Sequelize.INTEGER,

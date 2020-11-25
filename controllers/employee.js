@@ -87,6 +87,7 @@ exports.addEmployee = async (req, res, next) => {
   try {
     const name = req.body.name;
     const email = req.body.email;
+    const password = req.body.password
     const phone = req.body.phone;
     const address = req.body.address;
     const salary = req.body.salary;
@@ -98,6 +99,7 @@ exports.addEmployee = async (req, res, next) => {
     if (
       !name ||
       !email ||
+      !password ||
       !phone ||
       !address ||
       !salary ||
@@ -124,6 +126,7 @@ exports.addEmployee = async (req, res, next) => {
     const employee = await Employee.create({
       name: name,
       email: email,
+      password:password,
       phone: phone,
       address: address,
       salary: salary,
@@ -145,6 +148,7 @@ exports.editEmployee = async (req, res) => {
   try {
     const name = req.body.name;
     const email = req.body.email;
+    const password = req.body.password;
     const phone = req.body.phone;
     const address = req.body.address;
     const salary = req.body.salary;
@@ -156,13 +160,13 @@ exports.editEmployee = async (req, res) => {
     if (
       !name ||
       !email ||
+      !password ||
       !phone ||
       !address ||
       !salary ||
       !designation ||
       !department ||
-      !organizationId 
- 
+      !organizationId
     ) {
       return res.status(422).json(validation("Please input all field"));
     }
@@ -174,14 +178,15 @@ exports.editEmployee = async (req, res) => {
         .json(validation("No registered Organization Found.", res.statusCode));
     const editEmployee = await Employee.update(
       {
-        name: req.body.name,
-        email: req.body.email,
+        name: name,
+        email: email,
+        password:password,
         phone: phone,
         address: address,
         salary: salary,
-        designation: req.body.designation,
-        department: req.body.department,
-        organizationId: req.body.organizationId,
+        designation: designation,
+        department: department,
+        organizationId: organizationId,
         //image: req.file.filename,
       },
       {

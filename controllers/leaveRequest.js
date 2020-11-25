@@ -10,7 +10,7 @@ exports.getAllLeaveRequest = async (req, res) => {
     auth_user = await authUser(token);
     const leaveRequests = await LeaveRequest.findAll({
       where: {
-        "$organization.userId$": authEmployee.id,
+        "$organization.userId$": auth_user.id,
       },
       include: [
         {
@@ -18,7 +18,7 @@ exports.getAllLeaveRequest = async (req, res) => {
         },
         {
           model: Employee,
-        }
+        },
       ],
     });
     res

@@ -6,24 +6,41 @@ const Employee = require("../models/employee");
 
 exports.getAllAnnouncement = async (req, res) => {
   try {
-
-  
     const token = req.header("auth-token");
     auth_user = await authUser(token);
-     auth_employee = await authEmployee(token);
-    const announcements = await Announcement.findAll({
-      where: {
-        "$employeeId$": auth_employee.id,
-      },
-      include: [
-        {
-          model: Organization,
+    auth_employee = await authEmployee(token);
+    let announcements;
+    if (auth_employee.isValid == 1) {
+      announcements = await Announcement.findAll({
+        where: {
+          $employeeId$: auth_employee.id,
+          //"$organization.userId$": auth_user.id,
         },
-        {
-          model: Employee,
+        include: [
+          {
+            model: Organization,
+          },
+             {
+               model: Employee,
+             },
+        ],
+      });
+    } else {
+      announcements = await Announcement.findAll({
+        where: {
+          "$organization.userId$": auth_user.id,
         },
-      ],
-    });
+        include: [
+          {
+            model: Organization,
+          },
+          {
+            model: Employee,
+          },
+        ],
+      });
+    }
+    
     res
       .status(200)
       .json(success("OK", { data: announcements }, res.statusCode));
@@ -54,6 +71,7 @@ exports.addAnnouncement = async (req, res) => {
   try {
     const message = req.body.message;
     const organizationId = req.body.organizationId;
+    const employeeId = req.body.employeeId;
 
     if (!message || !organizationId) {
       return res.status(422).json(validation("Please input all field"));
@@ -65,9 +83,12 @@ exports.addAnnouncement = async (req, res) => {
         .status(400)
         .json(validation("No registered Organization Found."));
 
+
+
     const announcement = await Announcement.create({
       message: message,
       organizationId: organizationId,
+      employeeId: employeeId
     });
     res
       .status(200)

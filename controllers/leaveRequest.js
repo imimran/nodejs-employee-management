@@ -72,29 +72,33 @@ exports.addLeaveRequest = async (req, res) => {
     const leaveForDays = req.body.leaveForDays;
     const reason = req.body.reason;
     const status = req.body.status;
-    const employeeId = req.body.employeeId;
-    const organizationId = req.body.organizationId;
+    // const employeeId = req.body.employeeId;
+    // const organizationId = req.body.organizationId;
 
-    if (!leaveForDays || !reason || !status || !employeeId || !organizationId) {
+    if (!leaveForDays || !reason || !status ) {
       return res.status(422).json(validation("Please input all field"));
     }
 
-    let employee = await Employee.findByPk(employeeId);
-    if (!employee)
-      return res.status(400).json(validation("No registered Employee Found."));
+    // let employee = await Employee.findByPk(employeeId);
+    // if (!employee)
+    //   return res.status(400).json(validation("No registered Employee Found."));
 
-    let organization = await Organization.findByPk(organizationId);
-    if (!organization)
-      return res
-        .status(400)
-        .json(validation("No registered Organization Found."));
+    // let organization = await Organization.findByPk(organizationId);
+    // if (!organization)
+    //   return res
+    //     .status(400)
+    //     .json(validation("No registered Organization Found."));
+
+    const token = req.header("auth-token");
+    auth_user = await authUser(token);
+    auth_employee = await authEmployee(token);
 
     const leaveReq = await LeaveRequest.create({
       leaveForDays: leaveForDays,
       reason: reason,
       status: status,
-      employeeId: employeeId,
-      organizationId: organizationId,
+      employeeId: auth_employee.id,
+      //organizationId: employee.organizationId,
     });
     res
       .status(200)

@@ -15,7 +15,7 @@ exports.getAllAttendence = async (req, res) => {
    
 
     let attendence;
-    if (auth_employee.isValid === 1) {
+    if (auth_employee.isValid) {
       attendence = await Attendence.findAll({
         where: {
           // "$organization.userId$": auth_user.id,
@@ -31,9 +31,10 @@ exports.getAllAttendence = async (req, res) => {
           },
         ],
       });
-    } else {
-      attendence = await Attendence.findAll()
-    }
+     } 
+     //else {
+      
+    // }
 
     res.status(200).json(success("OK", { data: attendence }, res.statusCode));
   } catch (error) {

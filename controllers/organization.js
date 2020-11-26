@@ -12,13 +12,17 @@ exports.getAllOrganization = async (req, res) => {
 
     let organizations;
 
-    if (auth_user.isAdmin == 1) {
-      organizations = await Organization.findAll();
-    } else {
-      organizations = await Organization.findAll({
-        where: { userId: auth_user.id },
-      });
-    }
+    // if (auth_user.isAdmin == 1) {
+    //   organizations = await Organization.findAll();
+    // } else {
+    //   organizations = await Organization.findAll({
+    //     where: { userId: auth_user.id },
+    //   });
+    // }
+
+    // organizations = await Organization.findAll({
+    //      where: { userId: auth_user.id },
+    //    });
 
     res
       .status(200)

@@ -7,7 +7,7 @@ async function authEmployee(req, res, next) {
   const token = req.header("auth-token");
   if (!token)
     return res
-      .status(501)
+      .status(401)
       .json(validation("Authorization Failed.No token Provided"));
 
   try {
@@ -15,7 +15,7 @@ async function authEmployee(req, res, next) {
     req.employee = await Employee.findByPk(decoded.id);
     next();
   } catch (error) {
-    res.status(500).json(validation("Authorization Failed. Invald token"));
+    res.status(401).json(validation("Authorization Failed. Invald token"));
   }
 }
 
